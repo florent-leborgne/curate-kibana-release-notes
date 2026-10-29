@@ -194,10 +194,27 @@ Read every PR before rewriting its note.
 - Preserve the PR link.
 - Use Elastic substitutions and formatting conventions.
 - Reclassify fixes and enhancements when the actual behavior warrants it.
+- Run the **jargon sweep** below on every bullet, including bullets you did not rewrite.
 
 Do not make every entry longer. Add detail only when it prevents ambiguity or explains meaningful user impact.
 
 After rewriting, fact-check every changed entry again against the PR and implementation. Verify the affected surface, symptom, UI labels, configuration gates, deployment scope, and claimed outcome.
+
+#### Jargon sweep (required, run twice)
+
+Run this sweep after the first rewrite and again after the missed-PR reconciliation in step 8, because late additions bring new jargon. PR titles and descriptions use engineering words that readers never see. Scan every live bullet in the target release (not commented bullets) and the breaking changes and deprecations.
+
+1. **Extract candidates.** List every acronym and every uncommon word in the live bullets. Then search the live bullets for these families:
+   - **Old or internal feature names.** `alerting v1`, `alerting v2`, code names such as `AlertZero` and `Nightshift`, team names, and plugin names, plus every row of the avoid table above. Use the current product name. For example, alerting v2 is **Universal Alerting** and v1 is **Classic Alerting**.
+   - **Version suffixes on connectors.** Connector specs often carry an internal `v2` suffix, for example `Databricks v2`. Verify the display name in the connector spec (`displayName`) and the connector docs page. Drop the suffix when the display name or docs title has none. Keep it only when the UI shows it, and then match the UI exactly, for example **Slack (v2)**. When the surrounding notes already drop the suffix, drop it everywhere.
+   - **Developer terms for UI objects.** `embeddable`, `by-reference` or `by-value` panels, `saved object` reference names, `DSL`, `canvas` for an attachment view, `pill`, `fake modal`. Name what the reader sees: a dashboard panel, a library panel, a badge, a dialog.
+   - **Engine internals.** `runner`, `tick`, `resume task`, `hand-off`, `backfill`, `parked`, `wake`, `dispatcher`, `episode`, `marker`, `clamping`, internal field names such as `policy_base_id`. Describe the symptom the reader sees and the result, not the mechanism.
+   - **Unexplained acronyms and API names.** Spell out or explain any acronym that the reader would not meet in the UI or the published docs.
+2. **Verify the user-facing name in code.** Search `origin/main` for the i18n string, `displayName`, or docs page title before you pick a replacement. Never invent a replacement. When the PR only has the internal name, read the diff and the PR screenshots to find what the reader sees.
+3. **Rewrite for the symptom.** Replace the internal word with what the reader observes. Keep configuration keys, API paths, setting names, and error text that the reader can search for, in backticks.
+4. **Keep terms the published docs already use.** Examples: Agent Builder skills, Task Manager, alerts-as-data, filter pill, human-in-the-loop, graph nodes. When unsure, search the published docs with the `elastic-docs` MCP before you rewrite.
+5. **Show the proposed list to the user before you apply it** when the replacement changes meaning, or when the user did not already decide the naming rule. Group the list by family and give the PR number, the current wording, and the proposed wording. Apply only after the user agrees. Do not stop to ask about renames that follow a rule the user already gave.
+6. **Record naming rules the user gives** (for example "drop the v2 on connectors") and apply them to the whole release, including bullets you add later and your own `%` comments.
 
 Rendered Kibana Markdown entries combine the short title and description into one bullet. Do not apply the changelog schema's 80-character title limit to these combined bullets. Apply separate title and description limits only when authoring structured changelog source that has distinct fields.
 
@@ -345,6 +362,7 @@ Before completion, verify:
 - Shipped version sections contain no `% !!DEFERRED!!`, `% Moved to`, or other resolved curation comments.
 - Still-open deferrals exist only in the unpublished target-version section.
 - The final missed-PR reconciliation has no unexplained differences.
+- The jargon sweep ran after the final reconciliation, and no live bullet contains an old feature name (such as alerting v2), a connector `v2` suffix that the UI doesn't show, a developer term for a UI object (such as embeddable or by-reference), or an engine internal.
 - The PR description, if any, matches the actual diff.
 
 Report:
