@@ -194,6 +194,7 @@ Read every PR before rewriting its note.
 - Preserve the PR link.
 - Use Elastic substitutions and formatting conventions.
 - Reclassify fixes and enhancements when the actual behavior warrants it.
+- For every new connector bullet, say where the connector is available: Agent Builder, workflows, or both. Read `supportedFeatureIds` in the connector spec (`src/platform/packages/shared/kbn-connector-specs/src/specs/<name>/`) at the build candidate commit. `agentBuilder` means Agent Builder and `workflows` means workflows. Ignore `contextEngine`. Use the pattern `Add the X connector, available in Agent Builder and workflows`, and recheck it on every update pass because `workflows` often arrives in a later PR.
 - Run the **jargon sweep** below on every bullet, including bullets you did not rewrite.
 
 Do not make every entry longer. Add detail only when it prevents ambiguity or explains meaningful user impact.
@@ -362,6 +363,7 @@ Before completion, verify:
 - Shipped version sections contain no `% !!DEFERRED!!`, `% Moved to`, or other resolved curation comments.
 - Still-open deferrals exist only in the unpublished target-version section.
 - The final missed-PR reconciliation has no unexplained differences.
+- Every new connector bullet states where it is available (Agent Builder, workflows, or both), matching `supportedFeatureIds` at the latest build candidate.
 - The jargon sweep ran after the final reconciliation, and no live bullet contains an old feature name (such as alerting v2), a connector `v2` suffix that the UI doesn't show, a developer term for a UI object (such as embeddable or by-reference), or an engine internal.
 - The PR description, if any, matches the actual diff.
 
