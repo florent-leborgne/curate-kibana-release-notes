@@ -249,6 +249,10 @@ Build the **expected set** from multiple independent sources:
 
 Never limit post-generation reconciliation to newly merged PRs. Search PRs updated after the generator cutoff and inspect their label-event history. A previously merged PR can become newly eligible when a version or release-note label is restored, or become stale when one is removed.
 
+Treat every label that starts with `release_note:` as a candidate, not only the ones the generator groups. The generator groups `release_note:fix`, `release_note:enhancement`, `release_note:feature`, `release_note:breaking`, and `release_note:deprecation`. A PR labeled `release_note:bug` (a legacy label that still exists) lands in the uncategorized list and is easy to miss. Search for `release_note:bug` on every pass, add the entry as a fix when it is user-facing, and propose changing the label to `release_note:fix`.
+
+Build the actual set from the target-version section only. PR numbers in older patch sections, such as deferred comments for a backport, make a candidate look present when it is not in the target release.
+
 Never rely on current version labels alone. Late merges, missing or changed labels, backport automation, branch divergence, and generator timing can all create gaps.
 
 Compare both directions:
