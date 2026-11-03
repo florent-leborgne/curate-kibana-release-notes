@@ -263,6 +263,17 @@ Build the **expected set** from multiple independent sources:
 6. Later PRs that revert, disable, or supersede listed changes, including PRs labeled `release_note:skip`.
 7. PRs whose target-version or `release_note:*` labels were added, removed, or changed after the initial generator run, regardless of when the PR merged.
 8. The latest Elastic Defend generator output for the target version, if the user provides it.
+9. Security feature flags that are new and on by default, or that changed from off to on, between the previous minor release branch and the target build candidate. Teams often build a feature behind a flag in many `release_note:skip` PRs and then turn it on in another `release_note:skip` PR, so no source above finds it.
+
+To find source 9 candidates, compare the flag values in `x-pack/solutions/security/plugins/security_solution/common/experimental_features.ts`:
+
+```bash
+F=x-pack/solutions/security/plugins/security_solution/common/experimental_features.ts
+diff <(git show origin/<previous-minor-branch>:$F | grep -oE '^\s+\w+: (true|false),' | tr -d ' ,' | sort) \
+     <(git show <bc-kibana-commit>:$F | grep -oE '^\s+\w+: (true|false),' | tr -d ' ,' | sort)
+```
+
+For each flag that is now `true`, find the PR that turned it on with `git log -G'<flag>: true' <bc-kibana-commit> -- $F`, then read that PR and the PRs it links to for the feature itself. Skip flags that only support another unreleased or technical preview feature, or that only affect serverless. Add a bullet for each remaining feature, linking the main feature PR and the PR that turned it on, and propose relabeling the main feature PR from `release_note:skip` to `release_note:feature` or `release_note:enhancement`.
 
 Changed paths are a reason to inspect a PR, not proof of scope. Classify every source 2 candidate with the step 2 rules before adding it.
 
