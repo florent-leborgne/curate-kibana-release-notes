@@ -98,24 +98,24 @@ The published files set these conventions. Read the most recent shipped section 
 
   Do not use bold label lines such as `**Cases**:` for groups, and do not add headings below H4.
 
-  Use these group labels, in this order, and omit any group that has no entries in that section:
+  Order the groups alphabetically by their displayed names, as the Kibana core notes do, so `{{elastic-defend}}` sorts as "Elastic Defend". Use these group labels, and omit any group that has no entries in that section:
 
-  1. Detection rules and exceptions (detection rules, prebuilt rules, rule exceptions)
-  2. Alerts and investigations (alerts, the alert details flyout, Timeline)
-  3. Attack Discovery
-  4. AI Assistant and Agent Builder
-  5. Workflows
-  6. Automatic Import
-  7. Automatic Migration
-  8. Cases
-  9. Entity Analytics
-  10. Cloud Security (including asset inventory)
-  11. Threat intelligence
-  12. Osquery
-  13. General (navigation, onboarding, Security dashboards, and anything that fits no other group)
-  14. `{{elastic-defend}}` (endpoint management, response actions, Elastic Defend policy settings, and all Elastic Defend bullets). Use the anchor suffix `elastic-defend`.
+  - AI Assistant and Agent Builder
+  - Alerts and investigations (alerts, the alert details flyout, Timeline)
+  - Attack Discovery
+  - Automatic Import
+  - Automatic Migration
+  - Cases
+  - Cloud Security (including asset inventory)
+  - Detection rules and exceptions (detection rules, prebuilt rules, rule exceptions)
+  - `{{elastic-defend}}` (endpoint management, response actions, Elastic Defend policy settings, and all Elastic Defend bullets). Use the anchor suffix `elastic-defend`.
+  - Entity Analytics
+  - General (navigation, onboarding, Security dashboards, and anything that fits no other group)
+  - Osquery
+  - Threat intelligence
+  - Workflows
 
-  Keep Elastic Defend bullets from `endpoint-dev` at the end of the `{{elastic-defend}}` group, after the Kibana bullets. Add a new group only when several entries in a release share a feature that no existing group covers, and keep the label consistent across releases. Do not regroup sections of releases before 9.6.0.
+  Within the `{{elastic-defend}}` group, put Elastic Defend bullets from `endpoint-dev` after the Kibana bullets. Add a new group only when several entries in a release share a feature that no existing group covers, insert it in alphabetical order, and keep the label consistent across releases. Do not regroup sections of releases before 9.6.0.
 - Breaking changes, deprecations, and known issues go in their own files, never in `index.md`. They use `::::{dropdown}` blocks with **Impact** and **Action** (or **Workaround** for known issues) paragraphs.
 - Anchor formats are not consistent across older sections of `breaking-changes.md` (for example `elastic-security-940-breaking-changes` and `elastic-security-9.4.0-deprecations`). Match the most recent section in the same file. Do not rewrite shipped anchors.
 - Kibana bullets end with `[#123456]({{kib-pull}}123456)`. Elastic Defend bullets end without a link.
