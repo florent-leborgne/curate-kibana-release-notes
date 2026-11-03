@@ -77,7 +77,36 @@ The published files set these conventions. Read the most recent shipped section 
   ### Fixes [elastic-security-VERSION-fixes]
   ```
 
-  Do not add category subheadings. Discard any area headings from the generator output.
+  Do not add Markdown subheadings below these two headings. Discard any area headings from the generator output.
+- Starting with 9.6.0, group the bullets in each section by feature, in the same style as the Kibana core notes. Each group starts with a bold label line followed by its bullets, and a blank line separates groups:
+
+  ```markdown
+  **Detection rules and exceptions**:
+  * Adds ...
+  * Updates ...
+
+  **Cases**:
+  * Adds ...
+  ```
+
+  Use these group labels, in this order, and omit any group that has no entries in that section:
+
+  1. Detection rules and exceptions (detection rules, prebuilt rules, rule exceptions)
+  2. Alerts and investigations (alerts, the alert details flyout, Timeline)
+  3. Attack Discovery
+  4. AI Assistant and Agent Builder
+  5. Workflows
+  6. Automatic Import
+  7. Automatic Migration
+  8. Cases
+  9. Entity Analytics
+  10. Cloud Security (including asset inventory)
+  11. Threat intelligence
+  12. Osquery
+  13. General (navigation, onboarding, Security dashboards, and anything that fits no other group)
+  14. `{{elastic-defend}}` (endpoint management, response actions, Elastic Defend policy settings, and all Elastic Defend bullets)
+
+  Keep Elastic Defend bullets from `endpoint-dev` at the end of the `{{elastic-defend}}` group, after the Kibana bullets. Add a new group only when several entries in a release share a feature that no existing group covers, and keep the label consistent across releases. Do not regroup sections of releases before 9.6.0.
 - Breaking changes, deprecations, and known issues go in their own files, never in `index.md`. They use `::::{dropdown}` blocks with **Impact** and **Action** (or **Workaround** for known issues) paragraphs.
 - Anchor formats are not consistent across older sections of `breaking-changes.md` (for example `elastic-security-940-breaking-changes` and `elastic-security-9.4.0-deprecations`). Match the most recent section in the same file. Do not rewrite shipped anchors.
 - Kibana bullets end with `[#123456]({{kib-pull}}123456)`. Elastic Defend bullets end without a link.
@@ -173,7 +202,7 @@ Run targeted tests, formatting, and the production build. Open or update a focus
 
 ### 5. Correct release-note type and grouping
 
-The two `index.md` sections leave no category headings, so topical order carries the structure. Audit every remaining target-release entry:
+The two `index.md` sections have no subheadings. Feature groups with bold labels carry the structure, as described in [Format of the Security notes](#format-of-the-security-notes). Audit every remaining target-release entry:
 
 - Is it a feature or enhancement, or a fix?
 - Is it duplicated or split across related changes, including an original PR and its backport?
@@ -182,7 +211,7 @@ The two `index.md` sections leave no category headings, so topical order carries
 
 Remove a same-release stabilization fix when the feature entry already describes the shipped capability and the fix adds no distinct user-facing impact. Combine entries when they form one user story. Keep fixes that describe an independently meaningful limitation, regression, migration concern, or impact on behavior available before the target release.
 
-After all moves, perform a dedicated ordering-only pass. Within each section, place entries about the same feature next to one another: detection rules and prebuilt rules, alerts, Timeline and investigations, Entity Analytics, Osquery, Cases, AI features, Automatic Import and Automatic Migration, response actions, and Elastic Defend. Match the current file's convention for where Elastic Defend bullets sit. Verify the complete section instead of assuming earlier edits preserved topical grouping.
+After all moves, perform a dedicated grouping and ordering pass. Assign every entry to exactly one feature group. When a combined entry spans features, such as a Kibana and Elastic Defend change, place it in the group where users configure or see the feature. Within each group, place entries about the same subtopic next to one another, and put standout entries first. Verify the complete section instead of assuming earlier edits preserved the grouping.
 
 ### 6. Rewrite and style every entry
 
@@ -341,6 +370,7 @@ See [reconciliation-reference.md](reconciliation-reference.md) for query and com
 Run a final prominence pass only after scope, classification, wording, consolidation, and reconciliation are stable.
 
 - Promote net-new capabilities that are immediately understandable, discoverable, or notably improve what readers can do. Do not promote an entry only because its implementation was large.
+- Promote entries to the top of their own feature group. Do not move an entry to another group or reorder the groups to make it more prominent.
 - Move the complete related cluster with the highlighted entry so prominence does not break topical grouping.
 - Preserve technical preview, subscription, configuration, deployment, and feature-flag qualifiers.
 - Do not lead with a disabled-by-default capability unless readers can use it in the target release and the entry clearly states the requirement.
