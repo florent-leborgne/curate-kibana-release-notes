@@ -77,17 +77,26 @@ The published files set these conventions. Read the most recent shipped section 
   ### Fixes [elastic-security-VERSION-fixes]
   ```
 
-  Do not add Markdown subheadings below these two headings. Discard any area headings from the generator output.
-- Starting with 9.6.0, group the bullets in each section by feature, in the same style as the Kibana core notes. Each group starts with a bold label line followed by its bullets, and a blank line separates groups:
+  Discard any area headings from the generator output.
+- Starting with 9.6.0, group the bullets in each section by feature. Each group starts with an H4 heading followed by its bullets, and a blank line separates groups. Every group heading needs an explicit anchor in the form `elastic-security-VERSION-SECTION-GROUP`, where `SECTION` is `features` or `fixes` and `GROUP` is the group label in lowercase with spaces replaced by hyphens. The same group label appears in both sections, so the section part keeps the anchors unique:
 
   ```markdown
-  **Detection rules and exceptions**:
+  ### Features and enhancements [elastic-security-VERSION-features-enhancements]
+
+  #### Detection rules and exceptions [elastic-security-VERSION-features-detection-rules-and-exceptions]
   * Adds ...
   * Updates ...
 
-  **Cases**:
+  #### Cases [elastic-security-VERSION-features-cases]
   * Adds ...
+
+  ### Fixes [elastic-security-VERSION-fixes]
+
+  #### Cases [elastic-security-VERSION-fixes-cases]
+  * Fixes ...
   ```
+
+  Do not use bold label lines such as `**Cases**:` for groups, and do not add headings below H4.
 
   Use these group labels, in this order, and omit any group that has no entries in that section:
 
@@ -104,7 +113,7 @@ The published files set these conventions. Read the most recent shipped section 
   11. Threat intelligence
   12. Osquery
   13. General (navigation, onboarding, Security dashboards, and anything that fits no other group)
-  14. `{{elastic-defend}}` (endpoint management, response actions, Elastic Defend policy settings, and all Elastic Defend bullets)
+  14. `{{elastic-defend}}` (endpoint management, response actions, Elastic Defend policy settings, and all Elastic Defend bullets). Use the anchor suffix `elastic-defend`.
 
   Keep Elastic Defend bullets from `endpoint-dev` at the end of the `{{elastic-defend}}` group, after the Kibana bullets. Add a new group only when several entries in a release share a feature that no existing group covers, and keep the label consistent across releases. Do not regroup sections of releases before 9.6.0.
 - Breaking changes, deprecations, and known issues go in their own files, never in `index.md`. They use `::::{dropdown}` blocks with **Impact** and **Action** (or **Workaround** for known issues) paragraphs.
@@ -202,7 +211,7 @@ Run targeted tests, formatting, and the production build. Open or update a focus
 
 ### 5. Correct release-note type and grouping
 
-The two `index.md` sections have no subheadings. Feature groups with bold labels carry the structure, as described in [Format of the Security notes](#format-of-the-security-notes). Audit every remaining target-release entry:
+Within the two `index.md` sections, H4 feature group headings carry the structure, as described in [Format of the Security notes](#format-of-the-security-notes). Audit every remaining target-release entry:
 
 - Is it a feature or enhancement, or a fix?
 - Is it duplicated or split across related changes, including an original PR and its backport?
