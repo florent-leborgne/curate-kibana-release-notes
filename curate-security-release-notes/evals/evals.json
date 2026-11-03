@@ -1,0 +1,73 @@
+{
+  "skill_name": "curate-security-release-notes",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Curate the Elastic Security 9.3.0 release notes in ~/Documents/github/docs-content. The 9.3.0 section of release-notes/elastic-security/index.md includes: PR #230111 adding a bulk action for prebuilt detection rules (Team:Detection Rule Management); PR #230222 adding a new Kibana role privilege for API keys (Team:Security, Feature:Users/Roles/API Keys); PR #230333 adding an Observability SLO burn-rate chart (Team:obs-ux-management); and PR #230444 renaming an internal Cypress helper in x-pack/solutions/security with release_note:enhancement. Clean scope and report what you would remove.",
+      "expected_output": "Keeps the detection rules PR. Proposes removing the Kibana core API key privilege PR (routes to Kibana notes), the Observability PR, and the internal test helper, with evidence from labels and changed paths. Does not rewrite shipped older-version bullets.",
+      "expectations": [
+        "Keeps the prebuilt detection rules PR as in-scope Security content",
+        "Proposes removing the Kibana core API key privilege PR and says it belongs in the Kibana release notes",
+        "Proposes removing the Observability SLO PR",
+        "Proposes removing the internal test helper as not user-facing even though its path is under x-pack/solutions/security",
+        "Captures evidence (labels, feature, changed paths) for each proposed removal",
+        "Does NOT rewrite live bullets in already-shipped version sections"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Update pass for Elastic Security 9.3.0. Latest BC is 9.3.0-abcd1234 whose Kibana commit is abcdef1. PR #230555 has v9.3.0, release_note:fix, and Team:Detection Engine, and its backport merged to 9.3 after that BC commit. git merge-base --is-ancestor reports OUT. Add it to the 9.3.0 Security notes if it belongs.",
+      "expected_output": "Does not add a live 9.3.0 bullet. Records the PR as deferred with % !!DEFERRED!! in the unpublished target section only, because ancestry against the BC commit is OUT.",
+      "expectations": [
+        "Does NOT add PR #230555 as a live 9.3.0 release-note bullet",
+        "Records the PR as deferred using % !!DEFERRED!! in the unpublished target-version section",
+        "Uses git merge-base --is-ancestor against the BC Kibana commit, not the merge date alone",
+        "Does NOT rewrite a deferred comment to Moved to 9.3.1 or similar"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Rewrite the unpublished 9.3.0 Security bullets. Current text: 'Fix SIEMMigrations wizard crash in expandable flyout [#230666]({{kib-pull}}230666).' and 'Add support for Defend to scan bigger files (endpoint-dev#4567).' Shipped 9.2.0 notes say 'Adds rule gaps panel.'",
+      "expected_output": "Rewrites both bullets with third-person verbs (Fixes, Increases or Updates), replaces SIEMMigrations and expandable flyout with verified reader-facing names, uses {{elastic-defend}}, removes the private endpoint-dev reference, and leaves the shipped 9.2.0 bullet unchanged.",
+      "expectations": [
+        "Uses third-person present-tense verbs such as Fixes, not imperative Fix or Add",
+        "Replaces SIEMMigrations with the verified product name, such as Automatic Migration",
+        "Replaces expandable flyout with the reader-facing name of the flyout or flags it for verification",
+        "Uses {{elastic-defend}} and removes the endpoint-dev link or reference",
+        "Keeps the {{kib-pull}} link on the Kibana bullet",
+        "Does NOT rewrite the shipped 9.2.0 bullet"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "While curating Security 9.3.0, PR #230777 changes the Kibana spaces selector. It has Team:Security Solution Platform and release_note:enhancement, so the generator put it in the Security notes. Add Feature:Security/Spaces so it routes to Kibana instead, and remove the Security team label.",
+      "expected_output": "Explains that Security labels have priority 100, so adding a Kibana core label will not reroute it. Does not remove the valid ownership label. Proposes moving the entry manually to the Kibana notes and asks for approval before any label change.",
+      "expectations": [
+        "Explains that securityLabels route at priority 100 and outrank Kibana core areas",
+        "Does NOT remove the valid Team:Security Solution Platform ownership label",
+        "Shows any proposed label change to the user before applying it",
+        "Removes the entry from the Security target release and says it belongs in the Kibana release notes"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "The 9.3.0 Security notes include a fix for PR #230888 that resolves the known issue 'Filtering the Add Elastic rules page can install an outdated prebuilt rule version', which currently says Applies to: Stack 9.2.0-9.2.4. Finish the known-issues work for 9.3.0.",
+      "expected_output": "Keeps the fix bullet in index.md and updates the known issue's Resolved paragraph to name 9.3.0, and checks Applies to. Does not delete the known issue.",
+      "expectations": [
+        "Keeps the fix bullet in index.md",
+        "Adds or extends the Resolved paragraph in known-issues.md to name 9.3.0",
+        "Checks and corrects the Applies to line if needed",
+        "Does NOT delete the known issue while it still applies to supported versions"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Curate the Kibana 9.3.0 core release notes in elastic/kibana docs/release-notes/index.md.",
+      "expected_output": "Declines as out of scope and points the user to curate-kibana-release-notes.",
+      "expectations": [
+        "Does NOT edit elastic/kibana docs/release-notes files",
+        "Directs the user to curate-kibana-release-notes"
+      ]
+    }
+  ]
+}

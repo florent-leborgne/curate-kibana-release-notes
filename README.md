@@ -26,6 +26,23 @@ git clone https://github.com/florent-leborgne/curate-kibana-release-notes.git ~/
 
 If you omit the version, the skill asks for it before starting.
 
+## Elastic Security release notes
+
+The [`curate-security-release-notes`](curate-security-release-notes/SKILL.md) skill in this repository curates the Elastic Security Stack release notes in `elastic/docs-content` (`release-notes/elastic-security/`). It covers the release notes, breaking changes, deprecations, and known issues, including Elastic Defend entries from `endpoint-dev`.
+
+To install it, clone this repository and link or copy the skill folder into your agent skills directory:
+
+```bash
+git clone https://github.com/florent-leborgne/curate-kibana-release-notes.git
+cp -R curate-kibana-release-notes/curate-security-release-notes ~/.claude/skills/
+```
+
+Then run it with the target version:
+
+```text
+/curate-security-release-notes 9.6.0
+```
+
 ## Related skills
 
 These catalog skills in [elastic/elastic-docs-skills](https://github.com/elastic/elastic-docs-skills) cover adjacent work:
